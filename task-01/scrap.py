@@ -53,30 +53,24 @@ response = requests.get(url)
 # Parse the HTML content of the response using BeautifulSoup
 soup = BeautifulSoup(response.content, 'html.parser')
 
-# Find the table that contains the country data
+# Find the table that contains the country dat
 table = soup.find('table', {'id': 'main_table_countries_today'})
 
-# Find the rows of the table (excluding the header row)
 rows = table.find_all('tr')[1:]
 
-# Create a list to store the data for the top 10 countries
 data = []
 
-# Loop through the rows and extract the data for each country
 for row in rows[:10]:
-    # Extract the columns of the row
+      
     columns = row.find_all('td')
 
-    # Extract the name, total cases, total deaths, and total recovered for the country
     name = columns[1].text.strip()
     cases = int(columns[2].text.strip().replace(',', ''))
     deaths = int(columns[4].text.strip().replace(',', ''))
     recovered = int(columns[6].text.strip().replace(',', ''))
 
-    # Add the data for the country to the list
     data.append([name, cases, deaths, recovered])
 
-# Create a CSV file and write the data to it
 with open('test.csv', 'w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(['Country', 'Total Cases', 'Total Deaths', 'Total Recovered'])
